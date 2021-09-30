@@ -1,0 +1,101 @@
+{ 
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600,
+    "height": 200,
+    "title": "Collision Severity in Australia & New Zealand, 2018",
+    "data": {
+        "url": "https://raw.githubusercontent.com/ChantelRaja/fit3179-homework-wk10/main/HomeworkWk10.csv"
+    },
+    "params":[
+        {
+            "name":"State",
+            "bind":{
+                "input":"select",
+                "options":[
+                    null,
+                    "VIC",
+                    "SA",
+                    "QLD",
+                    "NZ"
+                ],
+                "labels":[
+                    "Show All",
+                    "Victoria",
+                    "South Australia",
+                    "Queensland",
+                    "New Zealand"
+                ],
+                "name": "State Selection"
+            }
+        }
+    ],
+    "transform": [
+        {"filter":"State == null || datum.LocationState == State"}
+    ],
+    "encoding":{
+        "y":{ 
+            "field": "DescriptionSeverity", 
+            "type":"nominal",
+            "title":"Severity"
+        },
+        "x":{ 
+            "aggregate":"count", 
+            "field": "DescriptionSeverity", 
+            "type":"quantitative",
+            "title": "Collision Count"
+        }
+    },
+    "layer":[
+        {
+            "mark": "bar",
+            "encoding":{
+                "color":{
+                    "field": "DescriptionSeverity",
+                    "type": "nominal",
+                    "title": "Severity",
+                    "scale": {
+                        "domain": [
+                            "fatality",
+                            "minor_injury",
+                            "property_damage",
+                            "serious_injury"
+                        ],
+                        "range":[
+                            "#a65624",
+                            "#a6cee3", 
+                            "#377eb8", 
+                            "#ff7f00"
+                        ]
+                    }
+                },
+                "opacity":{
+                    "value": 0.8
+                },
+                "tooltip":[
+                    {"field":"DescriptionSeverity", "type":"nominal", "title": "Severity"},
+                    {"aggregate":"count", "field": "DescriptionSeverity", "type": "quantitative", "title":"Collision Count"}
+                ]
+   
+            }
+        },
+        {
+            "mark": {
+                "type":"text",
+                "align": "left",
+                "baseline": "middle",
+                "dx": 2,
+                "fontSize": 11.5,
+                "fontStyle": "italic"
+            },
+            "encoding":{
+                "text": { "aggregate":"count", "field": "DescriptionSeverity", "type":"quantitative"},
+                "color": {"value":"black"},
+                "tooltip":[
+                    {"field":"DescriptionSeverity", "type":"nominal", "title": "Severity"},
+                    {"aggregate":"count", "field": "DescriptionSeverity", "type": "quantitative", "title":"Collision Count"}
+                ]
+            }
+        }
+    ]
+}
+
